@@ -10,6 +10,12 @@ public class SettingsActivity {
         for (int i = 0; i < a.length(); i++) if (a.charAt(i) != ' ') ans = true;
         return ans;
     }
+    void fileWrite(String name, String fil) throws IOException{
+        FileWriter file = new FileWriter(fil);
+        file.write(name);
+        file.flush();
+        file.close();
+    }
     void printTab() throws IOException{
         String Name1="",Name2 = "";
         Scanner sc = new Scanner(System.in);
@@ -21,13 +27,7 @@ public class SettingsActivity {
             System.out.println("Введіть ім'я другому гравцню.");
             Name2 = sc.next();
         }        
-        FileWriter file = new FileWriter("Name1.txt");
-        file.write(Name1);
-        file.flush();
-        file.close();
-        file = new FileWriter("Name2.txt");
-        file.write(Name2);
-        file.flush();
-        file.close();
+        fileWrite(Name1,"Name1.txt");
+        fileWrite(Name2,"Name2.txt");
     }
 }
