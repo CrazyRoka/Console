@@ -14,7 +14,7 @@ import java.util.Scanner;
  *
  * @author rokar
  */
-public class GameActivity {
+public class GameActivity extends FGameActivity {
     int counter = 1;
     char[][] matrix = new char[3][3];
     String text;
@@ -73,9 +73,7 @@ public class GameActivity {
     void Win() throws IOException{
         Tie();
     }
-    boolean isLine(char first, char second, char third){
-        return first == second && first == third && (first == 'X' || first == 'O');
-    }
+    @Override
     boolean checkIfWin() throws IOException{
         int winner = 0;
         for(int i = 0 ; i < 3; i++){
@@ -100,6 +98,15 @@ public class GameActivity {
         }
         return false;
     }
+    @Override
+    boolean checkIfTie() throws IOException{
+        boolean ans = false;
+        for(int i = 0 ; i < 3; i++)for(int j = 0; j < 3; j++)if(matrix[i][j]!='X' && matrix[i][j]!='O')ans=true;
+        if(ans==false){
+            text="НІчия! Перемогла дружба!";
+        }
+        return ans;
+    }
     void Tie() throws IOException{
         System.out.println("Введіть q, або введіть r щоб почати заново.");
         String input = sc.next();
@@ -112,6 +119,7 @@ public class GameActivity {
             if(z=='q')Exit(); else reset();
         }
     }
+    @Override
     void reset() throws IOException{
         for(int i = 0; i < 3; i++)for(int j = 0; j < 3; j++)matrix[i][j]='.';
         counter = 1;
@@ -119,14 +127,7 @@ public class GameActivity {
         setText();
         Game();
     }
-    boolean checkIfTie(){
-        boolean ans = false;
-        for(int i = 0 ; i < 3; i++)for(int j = 0; j < 3; j++)if(matrix[i][j]!='X' && matrix[i][j]!='O')ans=true;
-        if(ans==false){
-            text="НІчия! Перемогла дружба!";
-        }
-        return ans;
-    }
+    @Override
     void saveData() throws IOException{
         FileWriter file = new FileWriter("matrix.txt",false);
         for(int i = 0; i<3; i++)for(int j = 0; j<3; j++)file.write(matrix[i][j]);
@@ -165,11 +166,11 @@ public class GameActivity {
             System.out.println();
         }
     }
-    String currentPlayerName(int choice){
-        return (choice%2==1?Name1:Name2);
-    }
     void setText(){
         text = "Хід " + currentPlayerName(counter);
     }
-    void Exit(){System.exit(0);}
+    @Override
+    public String currentPlayerName(int choice){
+        return (choice%2==1?Name1:Name2);
+    }
 }
